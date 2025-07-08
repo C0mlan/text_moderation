@@ -30,7 +30,16 @@ SECRET_KEY = 'django-insecure-@7amg-9@i&vqo3#q^n=-9t^ycmwqu_k_r4n882gtgp8z$q@t(*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ]
+    # ],
+    #  "DEFAULT_SCHEMA_CLASS":"drf_spectacular.openapi.AutoSchema",
+}
 
 
 # Application definition
@@ -44,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     "rest_framework",
+    "rest_framework_api_key",
 
 ]
 
