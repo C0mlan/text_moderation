@@ -5,15 +5,18 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.timezone import now
+from datetime import timedelta
 
 
 class MyAPIKey(AbstractAPIKey):
-    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    user = models.OneToOneField(User, on_delete= models.CASCADE) # 1 Api_key for a user
     user_key = models.CharField(max_length=128, blank=True, null=True)
 
         
     usage_limit = models.PositiveIntegerField(default=5)  
-    usage_count = models.PositiveIntegerField(default=0)     
+    usage_count = models.PositiveIntegerField(default=0)
+    last_reset = models.DateTimeField(null=True, blank=True)    
     blocked = models.BooleanField(default=False)            
     expires_at = models.DateTimeField(null=True, blank=True) 
 
@@ -32,7 +35,7 @@ class MyAPIKey(AbstractAPIKey):
     def __str__(self):
         return f"APIKey({self.user.username}, {self.prefix})"   
     
-         
+# this signal generates the api_key when a user signup
 def create_key(sender, instance, created, **kwargs):
     if created:
         api_key_obj, key = MyAPIKey.objects.create_key(name=instance.username, user=instance)
