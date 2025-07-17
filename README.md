@@ -32,12 +32,14 @@ text_moderation/
 │ ├── urls.py 
 │ ├── serializers.py
 │ ├── permissions.py             # Custom API key permission logic
-│ ├── tasks.py                       # background tasks
+│ ├── tasks.py                       # background tasks and loads ML models 
 │ └── ...
 ├── train_model/                   # Machine learning models and notebooks
-│ ├── toxic_model.pkl 
-│ ├── spam_model.pkl 
-│ └── model_training.ipynb
+│ ├── toxic_model.h5 
+│ ├── spam_pipeline.pkl
+│ ├── tokenizer.pkl
+│ ├── spam_detection.ipynb
+│ └──toxic_detection.ipynb
 │
 ├── text_moderation/           # Main Django project configuration
 │ ├── settings.py 
