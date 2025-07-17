@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .permissions import HasValidAPIKeyWithLimit
+from .tasks import  predict_comment, predict_spam
 
 
 
@@ -30,3 +31,20 @@ def register_view(request):
 @permission_classes([HasValidAPIKeyWithLimit])
 def test_view(request):
     return Response({"message": "You have access to the protected data!"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([HasValidAPIKeyWithLimit])
+def text_predict(request):
+    text = request.data.get('text')
+    toxic_result = predict_comment(text)
+    spam_result = predict_spam(text)
+ 
+
+    return Response({
+    "toxicity_prediction": toxic_result,
+    "spam_prediction": spam_result
+     
+    })
+
+

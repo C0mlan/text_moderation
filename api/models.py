@@ -44,4 +44,8 @@ def create_key(sender, instance, created, **kwargs):
         print(f"API Key for {instance.username}: {key}")
 
 post_save.connect(create_key, sender=User)
+
+
+
+
  
